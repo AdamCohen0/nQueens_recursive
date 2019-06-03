@@ -15,16 +15,6 @@ public class Chessboard {
         board[rank][file] = value;
     }
     
-    public boolean rankUnfilled(int rank) {
-        int pieceCount = 0;
-        for(int piece : board[rank]) {
-            pieceCount += piece;
-        }
-        if(pieceCount > 0)
-            return false;
-            return true;
-    }
-    
     public boolean checkMajorDiagonal(int rank, int file) {
         int diagRank = rank;
         int diagFile = file;
@@ -70,57 +60,6 @@ public class Chessboard {
             return false;
             return true;
     }
-    
-    public boolean checkRadius(int rank, int file) {
-        boolean topEdge = false, bottomEdge = false, rightEdge = false, leftEdge = false;
-        int pieceCount = 0;
-        if(rank == 0) topEdge = true;
-        if(rank == size - 1) bottomEdge = true;
-        if(file == 0) leftEdge = true;
-        if(file == size - 1) rightEdge = true;
-        
-        if(topEdge && leftEdge)
-            pieceCount = board[0][1] + board[1][0] + board[1][1];
-        if(topEdge && rightEdge)
-            pieceCount = board[0][size - 2] + board[1][size - 2] + board[1][size - 1];
-        if(bottomEdge && leftEdge)
-            pieceCount = board[size - 2][0] + board[size - 2][1] + board[size - 1][1];
-        if(bottomEdge && rightEdge)
-            pieceCount = board[size - 2][size - 2] + board[size - 2][size - 1] + board[size - 1][size - 2];
-        
-        if((bottomEdge && !topEdge) && (bottomEdge && !rightEdge) && (bottomEdge &&!leftEdge)) {
-            pieceCount = board[rank - 1][file];
-            for(int i = -1; i <= 1; i+=2) 
-                pieceCount += board[rank][file + i] + board[rank - 1][file + i];
-        }
-            
-        if((topEdge && !bottomEdge) && (topEdge && !rightEdge) && (topEdge &&!leftEdge)) {
-            pieceCount = board[rank + 1][file];
-            for(int i = -1; i <= 1; i+=2)
-                pieceCount += board[rank][file + i] + board[rank + 1][file + i];
-        }
-
-        if((rightEdge && !topEdge) && (rightEdge && !bottomEdge) && (rightEdge &&!leftEdge)) {
-            pieceCount = board[rank][file - 1];
-            for(int i = -1; i <= 1; i+=2)
-                pieceCount += board[rank + i][file] + board[rank + i][file - 1];
-        }
-            
-        if((leftEdge && !topEdge) && (leftEdge && !rightEdge) && (leftEdge &&!bottomEdge)) {
-            pieceCount = board[rank][file + 1];
-            for(int i = -1; i <= 1; i+=2)
-                pieceCount += board[rank + i][file] + board[rank + i][file + 1];
-        }
-            
-        if(!(topEdge || leftEdge || rightEdge || bottomEdge)) {
-            for(int i = -1; i <= 1; i+=2)
-                pieceCount += board[rank + i][file + i] + board[rank - i][file + i] + board[rank + i][file] + board[rank][file + i];
-        }
-            
-        if(pieceCount > 0)
-            return false;
-            return true;
-    }
         
     public boolean isValid() {
         for(int rank = 0; rank < size; rank++) {
@@ -128,10 +67,7 @@ public class Chessboard {
                 if(!checkMinorDiagonal(rank, file) || !checkMajorDiagonal(rank, file) || !checkRankFile(rank, file)) {
                     return false;
                 }
-                if (board[rank][file] == 1 && !checkRadius(rank, file)) {
-                    return false;
             }
-        }
         }
         return true;
     }
@@ -148,5 +84,4 @@ public class Chessboard {
         return returnString;
     }
     
-}
-          
+}          
